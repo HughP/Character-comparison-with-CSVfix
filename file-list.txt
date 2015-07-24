@@ -1,2 +1,0 @@
-nvwiki-ori.txt
-nvwiki-script-cleaned.txt
