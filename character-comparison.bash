@@ -20,7 +20,8 @@ done
 
 STATS=$(find * -iname '*.tab')
 
-#Need to remove the first tab in the file. Need to tell csvfix to use read_dsv Need to remove the head line of the tab documents too.
+#Need to remove the first tab in the file. Need to tell csvfix to use read_dsv 
+#Need to remove the head line of the tab documents too.
 
 for i in $STATS; do 
 	tail -n +2 ${i} | csvfix read_dsv -s '\t' -f 2,3,4 > ${i%%.tab}.csv 
@@ -29,7 +30,13 @@ done
 
 ARRAY=$(find * -iname '*nvwiki*character-stats*.csv')
 
-#Join on unicode ID column which is normally column 2 of the UnicodeCCOunt output, but since we got rid of that before, now it is column 1. Then find the differnece between the two files (before and after use of the cleanup script) with eval. Then sort the data so that the rows on the top are the ones with diffences between the two files. Then narrow the output to those fields which have a mathmatical change which does not equal zero.
+#Join on unicode ID column which is normally column 2 of the UnicodeCCount 
+#output, but since we got rid of that before, now it is column 1. Then find 
+#the differnece between the two files (before and after use of the cleanup script)
+#with eval. Then sort the data so that the rows on the top are the ones with 
+#diffences between the two files. Then narrow the output to those fields which
+#have a mathmatical change which does not equal to zero.
+
 csvfix join -oj -f 1:1 ${ARRAY[0]} ${ARRAY[1]} | csvfix eval -e '($3 - $5)' | csvfix sort -f 6:DN | csvfix remove -f 6 -e '0'
 exit;0
 
